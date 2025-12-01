@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/global.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title>Data Cards - Playground</title>
+    <style>
+      .data-demo {
+        max-width: 1000px;
+        padding: 2rem;
+      }
+
+      .controls {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #5ac3ff, #4a9eff);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(90, 195, 255, 0.4);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn.secondary {
+        background: linear-gradient(135deg, #ff6b9d, #c44569);
+      }
+
+      .data-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .data-card {
+        background: linear-gradient(145deg, #1a1a1a, #212121);
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.3s;
+        animation: fadeIn 0.5s;
+      }
+
+      .data-card:hover {
+        transform: translateY(-4px);
+        border-color: #5ac3ff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .avatar {
+        font-size: 3rem;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .user-name {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #5ac3ff;
+        margin: 0 0 0.25rem 0;
+      }
+
+      .user-role {
+        color: #999;
+        font-size: 0.9rem;
+        margin: 0 0 1rem 0;
+      }
+
+      .user-bio {
+        color: #ccc;
+        line-height: 1.6;
+        margin: 0 0 1rem 0;
+        font-size: 0.95rem;
+      }
+
+      .skills {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .skill-tag {
+        padding: 0.25rem 0.75rem;
+        background-color: #2a2a2a;
+        color: #5ac3ff;
+        border-radius: 4px;
+        font-size: 0.8rem;
+      }
+
+      .quote-card {
+        position: relative;
+        padding: 2rem;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .quote-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #fff;
+        margin: 0 0 1rem 0;
+        font-style: italic;
+      }
+
+      .quote-text::before {
+        content: '"';
+        font-size: 3rem;
+        color: #5ac3ff;
+        opacity: 0.3;
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+      }
+
+      .quote-author {
+        color: #5ac3ff;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .quote-category {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        background-color: #2a2a2a;
+        color: #999;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 3rem;
+        color: #5ac3ff;
+        font-size: 1.2rem;
+      }
+
+      .error {
+        text-align: center;
+        padding: 3rem;
+        color: #ff6b9d;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="../index.html" class="back-btn">← Back to Playground</a>
+    
+    <div class="demo-wrapper" style="align-items: flex-start; padding-top: 6rem;">
+      <div class="data-demo" x-data="{
+        dataType: 'users',
+        users: [],
+        quotes: [],
+        loading: false,
+        error: null,
+        
+        async fetchData(type) {
+          this.dataType = type
+          this.loading = true
+          this.error = null
+          
+          try {
+            const response = await fetch(`../data/${type}.json`)
+            if (!response.ok) throw new Error('Failed to fetch data')
+            const data = await response.json()
+            this[type] = data
+          } catch (err) {
+            this.error = err.message
+          } finally {
+            this.loading = false
+          }
+        },
+        
+        init() {
+          this.fetchData('users')
+        }
+      }">
+        <div class="controls">
+          <button @click="fetchData('users')" class="btn" :class="{ 'secondary': dataType !== 'users' }">
+            Load Users
+          </button>
+          <button @click="fetchData('quotes')" class="btn" :class="{ 'secondary': dataType !== 'quotes' }">
+            Load Quotes
+          </button>
+        </div>
+
+        <div x-show="loading" class="loading">
+          Loading data...
+        </div>
+
+        <div x-show="error" class="error" x-text="error"></div>
+
+        <!-- Users Grid -->
+        <div x-show="!loading && !error && dataType === 'users'" class="data-grid">
+          <template x-for="user in users" :key="user.id">
+            <div class="data-card">
+              <div class="avatar" x-text="user.avatar"></div>
+              <h3 class="user-name" x-text="user.name"></h3>
+              <p class="user-role" x-text="user.role"></p>
+              <p class="user-bio" x-text="user.bio"></p>
+              <div class="skills">
+                <template x-for="skill in user.skills" :key="skill">
+                  <span class="skill-tag" x-text="skill"></span>
+                </template>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Quotes Grid -->
+        <div x-show="!loading && !error && dataType === 'quotes'" class="data-grid">
+          <template x-for="quote in quotes" :key="quote.id">
+            <div class="data-card quote-card">
+              <p class="quote-text" x-text="quote.text"></p>
+              <div>
+                <p class="quote-author" x-text="'— ' + quote.author"></p>
+                <span class="quote-category" x-text="quote.category"></span>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

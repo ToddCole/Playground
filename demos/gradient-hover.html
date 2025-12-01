@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/global.css" />
+    <title>Gradient Hover - Playground</title>
+    <style>
+      .gradient-card {
+        position: relative;
+        width: 350px;
+        height: 400px;
+        background: #1a1a1a;
+        border-radius: 16px;
+        padding: 2rem;
+        overflow: hidden;
+        cursor: pointer;
+        border: 1px solid #333;
+      }
+
+      .gradient-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+          600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+          rgba(90, 195, 255, 0.3),
+          transparent 40%
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .gradient-card:hover::before {
+        opacity: 1;
+      }
+
+      .gradient-card-content {
+        position: relative;
+        z-index: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .gradient-card h2 {
+        font-size: 2rem;
+        margin: 0;
+        color: #5ac3ff;
+      }
+
+      .gradient-card p {
+        color: #ccc;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      .feature-list {
+        list-style: none;
+        padding: 0;
+        margin: 1rem 0 0 0;
+      }
+
+      .feature-list li {
+        padding: 0.5rem 0;
+        color: #aaa;
+        border-bottom: 1px solid #333;
+      }
+
+      .feature-list li:last-child {
+        border-bottom: none;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="../index.html" class="back-btn">← Back to Playground</a>
+    
+    <div class="demo-wrapper">
+      <div class="gradient-card" id="gradientCard">
+        <div class="gradient-card-content">
+          <h2>Gradient Effect</h2>
+          <p>Move your cursor over this card to see a smooth radial gradient that follows your mouse position.</p>
+          <ul class="feature-list">
+            <li>CSS Custom Properties</li>
+            <li>Radial Gradients</li>
+            <li>JavaScript Mouse Tracking</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const card = document.getElementById('gradientCard')
+      
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect()
+        const x = ((e.clientX - rect.left) / rect.width) * 100
+        const y = ((e.clientY - rect.top) / rect.height) * 100
+        
+        card.style.setProperty('--mouse-x', `${x}%`)
+        card.style.setProperty('--mouse-y', `${y}%`)
+      })
+    </script>
+  </body>
+</html>

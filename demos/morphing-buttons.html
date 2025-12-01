@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/global.css" />
+    <title>Morphing Buttons - Playground</title>
+    <style>
+      .button-container {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+        align-items: center;
+      }
+
+      .morph-btn {
+        position: relative;
+        padding: 1.5rem 3rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        overflow: hidden;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .btn-expand {
+        background: linear-gradient(135deg, #5ac3ff, #4a9eff);
+        min-width: 200px;
+      }
+
+      .btn-expand:hover {
+        min-width: 350px;
+        border-radius: 25px;
+        background: linear-gradient(135deg, #4a9eff, #5ac3ff);
+      }
+
+      .btn-expand:active {
+        transform: scale(0.95);
+      }
+
+      .btn-rotate {
+        background: linear-gradient(135deg, #ff6b9d, #c44569);
+        min-width: 200px;
+      }
+
+      .btn-rotate:hover {
+        transform: rotate(5deg) scale(1.1);
+        border-radius: 15px;
+        background: linear-gradient(135deg, #c44569, #ff6b9d);
+      }
+
+      .btn-slide {
+        background: linear-gradient(135deg, #ffa502, #ff6348);
+        min-width: 200px;
+      }
+
+      .btn-slide::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #ff6348, #ffa502);
+        transition: left 0.4s;
+        z-index: -1;
+      }
+
+      .btn-slide:hover::before {
+        left: 0;
+      }
+
+      .btn-slide:hover {
+        border-radius: 15px;
+      }
+
+      .btn-ripple {
+        background: linear-gradient(135deg, #26de81, #20bf6b);
+        min-width: 200px;
+      }
+
+      .btn-ripple::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+      }
+
+      .btn-ripple:hover::after {
+        width: 400px;
+        height: 400px;
+      }
+
+      .demo-title {
+        text-align: center;
+        margin-bottom: 3rem;
+        color: #5ac3ff;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="../index.html" class="back-btn">← Back to Playground</a>
+    
+    <div class="demo-wrapper">
+      <div class="button-container">
+        <h1 class="demo-title">Morphing Buttons</h1>
+        <button class="morph-btn btn-expand">Expand</button>
+        <button class="morph-btn btn-rotate">Rotate & Scale</button>
+        <button class="morph-btn btn-slide">Slide Effect</button>
+        <button class="morph-btn btn-ripple">Ripple</button>
+      </div>
+    </div>
+  </body>
+</html>

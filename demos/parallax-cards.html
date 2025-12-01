@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/global.css" />
+    <title>Parallax Cards - Playground</title>
+    <style>
+      .parallax-container {
+        perspective: 1000px;
+      }
+
+      .parallax-card {
+        position: relative;
+        width: 400px;
+        height: 500px;
+        background: linear-gradient(145deg, #1a1a1a, #252525);
+        border-radius: 20px;
+        border: 1px solid #333;
+        transform-style: preserve-3d;
+        transition: transform 0.1s;
+        cursor: pointer;
+      }
+
+      .parallax-layer {
+        position: absolute;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        transition: transform 0.1s;
+      }
+
+      .layer-1 {
+        top: 50px;
+        left: 50px;
+        right: 50px;
+        height: 150px;
+        background: linear-gradient(135deg, #5ac3ff, #4a9eff);
+        transform: translateZ(60px);
+      }
+
+      .layer-2 {
+        top: 220px;
+        left: 80px;
+        right: 80px;
+        height: 100px;
+        background: linear-gradient(135deg, #ff6b9d, #c44569);
+        transform: translateZ(40px);
+      }
+
+      .layer-3 {
+        top: 340px;
+        left: 110px;
+        right: 110px;
+        height: 80px;
+        background: linear-gradient(135deg, #ffa502, #ff6348);
+        transform: translateZ(20px);
+      }
+
+      .instructions {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #999;
+        font-size: 0.9rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="../index.html" class="back-btn">← Back to Playground</a>
+    
+    <div class="demo-wrapper">
+      <div class="parallax-container">
+        <div class="parallax-card" id="parallaxCard">
+          <div class="parallax-layer layer-1">Layer 1</div>
+          <div class="parallax-layer layer-2">Layer 2</div>
+          <div class="parallax-layer layer-3">Layer 3</div>
+          <div class="instructions">Move your mouse over the card</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const card = document.getElementById('parallaxCard')
+      
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect()
+        const centerX = rect.left + rect.width / 2
+        const centerY = rect.top + rect.height / 2
+        
+        const mouseX = e.clientX - centerX
+        const mouseY = e.clientY - centerY
+        
+        const rotateX = (mouseY / (rect.height / 2)) * -10
+        const rotateY = (mouseX / (rect.width / 2)) * 10
+        
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
+      })
+      
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'rotateX(0deg) rotateY(0deg)'
+      })
+    </script>
+  </body>
+</html>
