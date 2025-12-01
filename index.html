@@ -3,15 +3,143 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
-    <script src="script.js"></script>
-    <title>Hover Effect Example</title>
+    <link rel="stylesheet" href="styles/global.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title>API Playground</title>
+    <style>
+      .header {
+        text-align: center;
+        padding: 3rem 2rem 2rem;
+      }
+
+      .header h1 {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #5ac3ff, #4a9eff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .header p {
+        color: #999;
+        font-size: 1.1rem;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .demo-card {
+        background: linear-gradient(145deg, #1a1a1a, #212121);
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .demo-card:hover {
+        transform: translateY(-8px);
+        border-color: #5ac3ff;
+        box-shadow: 0 12px 24px rgba(90, 195, 255, 0.2);
+      }
+
+      .demo-card h2 {
+        font-size: 1.5rem;
+        color: #5ac3ff;
+        margin: 0;
+      }
+
+      .demo-card p {
+        color: #ccc;
+        margin: 0;
+        line-height: 1.6;
+      }
+
+      .demo-card .tag {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        background-color: #2a2a2a;
+        color: #5ac3ff;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      .demo-preview {
+        background-color: #0a0a0a;
+        border-radius: 8px;
+        padding: 1.5rem;
+        min-height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0.5rem;
+      }
+
+      .mini-preview {
+        transform: scale(0.7);
+      }
+    </style>
   </head>
-  <body>
-    <div class="card">
-      <p><span>Hover Me</span></p>
-      <p><span>Hover Me</span></p>
-      <p><span>Hover Me</span></p>
+  <body x-data="{ demos: [
+    {
+      title: 'Card Hover Effect',
+      description: 'Expanding panels with rotating text on hover. Interactive click handlers demonstrate event handling.',
+      url: 'demos/card-hover.html',
+      tag: 'CSS Transforms'
+    },
+    {
+      title: 'Gradient Hover',
+      description: 'Smooth gradient transitions that follow your cursor movement across the card.',
+      url: 'demos/gradient-hover.html',
+      tag: 'CSS Gradients'
+    },
+    {
+      title: 'Parallax Cards',
+      description: '3D depth effect with multiple layers moving at different speeds on mouse movement.',
+      url: 'demos/parallax-cards.html',
+      tag: '3D Effects'
+    },
+    {
+      title: 'Morphing Buttons',
+      description: 'Animated buttons that transform shape, color, and size with smooth transitions.',
+      url: 'demos/morphing-buttons.html',
+      tag: 'Animations'
+    },
+    {
+      title: 'Data Cards',
+      description: 'Dynamic cards populated from JSON data. Ready for API integration with loading states.',
+      url: 'demos/data-cards.html',
+      tag: 'Alpine.js + API'
+    }
+  ]}">
+    <div class="header">
+      <h1>Interactive Playground</h1>
+      <p>A collection of interactive demos showcasing modern CSS effects and JavaScript interactions</p>
+    </div>
+
+    <div class="demo-grid">
+      <template x-for="demo in demos" :key="demo.url">
+        <a :href="demo.url" class="demo-card">
+          <div>
+            <h2 x-text="demo.title"></h2>
+            <span class="tag" x-text="demo.tag"></span>
+          </div>
+          <p x-text="demo.description"></p>
+        </a>
+      </template>
     </div>
   </body>
 </html>
